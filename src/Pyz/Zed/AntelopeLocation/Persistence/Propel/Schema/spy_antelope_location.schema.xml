@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd" namespace="Orm\Zed\AntelopeLocation\Persistence" package="src.Orm.Zed.AntelopeLocation.Persistence">
+<table name="pyz_antelope_location" idMethod="native" allowPkInsert ="true" phpName="PyzAntelopeLocation">
+    <column name="location_name" type="VARCHAR" required = "true"/>
+    <column name="latitude" type="FLOAT" required = "true"/>
+    <column name="longitude" type="FLOAT" required = "true"/>
+    <column name="description" type="LONGVARCHAR"/>
+    <behavior name="timestampable"/>
+    <behavior name="event"/>
+    <column name="idAntelopeLocation" autoIncrement="true" required="true" primaryKey="true" type="INTEGER"/>
+</table>
+</database>

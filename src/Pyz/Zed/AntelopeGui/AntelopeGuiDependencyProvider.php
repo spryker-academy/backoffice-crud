@@ -25,8 +25,8 @@ class AntelopeGuiDependencyProvider extends AbstractBundleDependencyProvider
      */
     public const PROPEL_QUERY_ANTELOPE = 'PROPEL_QUERY_ANTELOPE';
 
-    public function provideCommunicationLayerDependencies(Container $container): Container
-    {
+    public function provideCommunicationLayerDependencies(Container $container
+    ): Container {
         $container = $this->addAntelopeFacade($container);
 
         return $this->addAntelopePropelQuery($container);
@@ -49,7 +49,9 @@ class AntelopeGuiDependencyProvider extends AbstractBundleDependencyProvider
         $container->set(
             static::PROPEL_QUERY_ANTELOPE,
             $container->factory(function () {
-                return PyzAntelopeQuery::create();
+                return PyzAntelopeQuery::create()
+                    ->joinWithPyzAntelopeLocation()
+                    ->joinWithPyzAntelopeType();
             }),
         );
 

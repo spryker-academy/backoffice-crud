@@ -4,6 +4,10 @@ namespace Pyz\Zed\AntelopeGui\Communication\Table;
 
 use Orm\Zed\Antelope\Persistence\Map\PyzAntelopeTableMap;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
+use Orm\Zed\AntelopeLocation\Persistence\Base\PyzAntelopeLocation;
+use Orm\Zed\AntelopeLocation\Persistence\Map\PyzAntelopeLocationTableMap;
+use Orm\Zed\AntelopeType\Persistence\Base\PyzAntelopeType;
+use Orm\Zed\AntelopeType\Persistence\Map\PyzAntelopeTypeTableMap;
 use Spryker\Zed\Gui\Communication\Table\AbstractTable;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 
@@ -19,18 +23,23 @@ class AntelopeTable extends AbstractTable
             PyzAntelopeTableMap::COL_IDANTELOPE => 'Id',
             PyzAntelopeTableMap::COL_NAME => 'Name',
             PyzAntelopeTableMap::COL_COLOR => 'Color',
-            PyzAntelopeTableMap::COL_LOCATION_ID => 'LocationId',
+            PyzAntelopeLocationTableMap::COL_LOCATION_NAME => 'Location',
+            PyzAntelopeTypeTableMap::COL_TYPE_NAME => 'Type',
         ]);
         $config->setSortable([
             PyzAntelopeTableMap::COL_IDANTELOPE,
             PyzAntelopeTableMap::COL_NAME,
             PyzAntelopeTableMap::COL_COLOR,
-            PyzAntelopeTableMap::COL_LOCATION_ID
+            PyzAntelopeTableMap::COL_LOCATION_ID,
+            PyzAntelopeLocationTableMap::COL_LOCATION_NAME,
+            PyzAntelopeTypeTableMap::COL_TYPE_NAME
         ]);
         $config->setSearchable([
             PyzAntelopeTableMap::COL_IDANTELOPE,
             PyzAntelopeTableMap::COL_NAME,
-            PyzAntelopeTableMap::COL_COLOR
+            PyzAntelopeTableMap::COL_COLOR,
+            PyzAntelopeLocationTableMap::COL_LOCATION_NAME,
+            PyzAntelopeTypeTableMap::COL_TYPE_NAME,
         ]);
         return $config;
     }
@@ -45,10 +54,18 @@ class AntelopeTable extends AbstractTable
             true);
         $results = [];
         foreach ($antelopeCollection as $antelopeEntity) {
+            /**
+             * @var PyzAntelopeLocation $location
+             * @var PyzAntelopeType $type
+             */
+            $location = $antelopeEntity->getPyzAntelopeLocation();
+            $type = $antelopeEntity->getPyzAntelopeType();
             $result[PyzAntelopeTableMap::COL_IDANTELOPE] = $antelopeEntity->getIdAntelope();
             $result[PyzAntelopeTableMap::COL_COLOR] = $antelopeEntity->getColor();
             $result[PyzAntelopeTableMap::COL_NAME] = $antelopeEntity->getName();
             $result[PyzAntelopeTableMap::COL_LOCATION_ID] = $antelopeEntity->getLocationId();
+            $result[PyzAntelopeLocationTableMap::COL_LOCATION_NAME] = $location->getLocationName();
+            $result[PyzAntelopeTypeTableMap::COL_TYPE_NAME] = $type->getTypeName();
             $results[] = $result;
         }
         return $results;

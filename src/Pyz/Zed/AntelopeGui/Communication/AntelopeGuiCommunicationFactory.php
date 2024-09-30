@@ -13,6 +13,7 @@ use Orm\Zed\AntelopeType\Persistence\PyzAntelopeTypeQuery;
 use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 use Pyz\Zed\AntelopeGui\AntelopeGuiDependencyProvider;
 use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeCreateForm;
+use Pyz\Zed\AntelopeGui\Communication\Form\DataProvider\AntelopeDataProvider;
 use Pyz\Zed\AntelopeGui\Communication\Table\AntelopeTable;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Symfony\Component\Form\FormInterface;
@@ -77,4 +78,8 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
             $antelopeTransfer, $options);
     }
 
+    public function createAntelopeDataProvider(): AntelopeDataProvider
+    {
+        return new AntelopeDataProvider($this->getAntelopeFacade());
+    }
 }

@@ -1,9 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pyz\Zed\AntelopeGui\Communication;
 
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
+use Orm\Zed\AntelopeLocation\Persistence\Map\PyzAntelopeLocationTableMap;
+use Orm\Zed\AntelopeLocation\Persistence\PyzAntelopeLocationQuery;
+use Orm\Zed\AntelopeType\Persistence\Map\PyzAntelopeTypeTableMap;
+use Orm\Zed\AntelopeType\Persistence\PyzAntelopeTypeQuery;
 use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 use Pyz\Zed\AntelopeGui\AntelopeGuiDependencyProvider;
 use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeCreateForm;
@@ -29,6 +35,40 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
         return $this->getProvidedDependency(AntelopeGuiDependencyProvider::FACADE_ANTELOPE);
     }
 
+    protected function createAntelopeTypeQuery(): PyzAntelopeTypeQuery
+    {
+        return PyzAntelopeTypeQuery::create();
+    }
+
+    protected function createAntelopeLocationQuery(): PyzAntelopeLocationQuery
+    {
+        return PyzAntelopeLocationQuery::create();
+    }
+
+    public function getAntelopeTypes(): array
+    {
+        $types = $this->createAntelopeTypeQuery()
+            ->orderBy(PyzAntelopeTypeTableMap::COL_TYPE_NAME)
+            ->find();
+        $result = [];
+        foreach ($types as $type) {
+            $result[$type->getIdantelopetype()] = $type->getTypeName();
+        }
+        return $result;
+    }
+
+    public function getAntelopeLocations(): array
+    {
+        $types = $this->createAntelopeLocationQuery()
+            ->orderBy(PyzAntelopeLocationTableMap::COL_LOCATION_NAME)
+            ->find();
+        $result = [];
+        foreach ($types as $type) {
+            $result[$type->getIdantelopelocation()] = $type->getLocationName();
+        }
+        return $result;
+    }
+
     public function createAntelopeCreateForm(
         AntelopeTransfer $antelopeTransfer,
         array $options = []
@@ -36,4 +76,5 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
         return $this->getFormFactory()->create(AntelopeCreateForm::class,
             $antelopeTransfer, $options);
     }
+
 }

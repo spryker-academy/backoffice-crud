@@ -28,6 +28,9 @@ class CreateController extends AbstractController
             AntelopeCreateForm::LABEL_GENDER => 'Gender',
             AntelopeCreateForm::LABEL_WEIGHT => 'Weight',
             AntelopeCreateForm::LABEL_AGE => 'Age',
+            AntelopeCreateForm::TYPE_CHOICES => $this->getFactory()
+                ->getAntelopeTypes(),
+            AntelopeCreateForm::LOCATION_CHOICES => $this->getFactory()->getAntelopeLocations()
         ];
 
         $antelopeForm = $this->getFactory()->createAntelopeCreateForm($antelopeTransfer,
@@ -51,8 +54,8 @@ class CreateController extends AbstractController
          * @var AntelopeTransfer $antelopeTransfer
          */
         $antelopeTransfer = $antelopeForm->getData();
-        $antelopeTransfer->setTypeId(1);
-        $antelopeTransfer->setLocationId(1);
+        // $antelopeTransfer->setTypeId(1);
+        // $antelopeTransfer->setLocationId(1);
         $this->getFactory()->getAntelopeFacade()->createAntelope($antelopeTransfer);
         $this->addSuccessMessage(static::ANTELOPE_SUCCESSFULLY_CREATED);
         return $this->redirectResponse(static::ANTELOPE_GUI_URL);

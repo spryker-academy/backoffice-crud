@@ -2,17 +2,22 @@
 
 namespace Pyz\Zed\AntelopeGui\Communication\Table;
 
+
 use Orm\Zed\Antelope\Persistence\Map\PyzAntelopeTableMap;
+use Orm\Zed\Antelope\Persistence\PyzAntelope;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
 use Orm\Zed\AntelopeLocation\Persistence\Base\PyzAntelopeLocation;
 use Orm\Zed\AntelopeLocation\Persistence\Map\PyzAntelopeLocationTableMap;
 use Orm\Zed\AntelopeType\Persistence\Base\PyzAntelopeType;
 use Orm\Zed\AntelopeType\Persistence\Map\PyzAntelopeTypeTableMap;
+use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Gui\Communication\Table\AbstractTable;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 
 class AntelopeTable extends AbstractTable
 {
+    protected const TABLE_COL_ACTION = 'Actions';
+
     public function __construct(protected PyzAntelopeQuery $antelopeQuery)
     {
     }
@@ -25,6 +30,7 @@ class AntelopeTable extends AbstractTable
             PyzAntelopeTableMap::COL_COLOR => 'Color',
             PyzAntelopeLocationTableMap::COL_LOCATION_NAME => 'Location',
             PyzAntelopeTypeTableMap::COL_TYPE_NAME => 'Type',
+            static::TABLE_COL_ACTION => 'Actions'
         ]);
         $config->setSortable([
             PyzAntelopeTableMap::COL_IDANTELOPE,
@@ -41,6 +47,7 @@ class AntelopeTable extends AbstractTable
             PyzAntelopeLocationTableMap::COL_LOCATION_NAME,
             PyzAntelopeTypeTableMap::COL_TYPE_NAME,
         ]);
+        $config->addRawColumn(self::TABLE_COL_ACTION);
         return $config;
     }
 
@@ -66,8 +73,26 @@ class AntelopeTable extends AbstractTable
             $result[PyzAntelopeTableMap::COL_LOCATION_ID] = $antelopeEntity->getLocationId();
             $result[PyzAntelopeLocationTableMap::COL_LOCATION_NAME] = $location->getLocationName();
             $result[PyzAntelopeTypeTableMap::COL_TYPE_NAME] = $type->getTypeName();
+            $result[static::TABLE_COL_ACTION] = $this->createButtons($antelopeEntity);
             $results[] = $result;
         }
         return $results;
+    }
+
+    protected function createButtons(PyzAntelope $antelopeEntity): string
+    {
+        $buttons = [];
+        $urlEdit = Url::generate('/antelope-gui/edit',
+            ['id-antelope' => $antelopeEntity->getIdantelope()]);
+        $urlRemove = Url::generate('/antelope-gui/remove',
+            ['id-antelope' => $antelopeEntity->getIdantelope()]);
+        $urlView = Url::generate('/antelope-gui/view',
+            ['id-antelope' => $antelopeEntity->getIdantelope()]);
+
+        $buttons[] = $this->generateRemoveButton($urlRemove, 'Remove antelope');
+        $buttons[] = $this->generateEditButton($urlEdit, 'Edit antelope');
+        $buttons[] = $this->generateViewButton($urlView, 'View antelope');
+
+        return implode(' ', $buttons);
     }
 }

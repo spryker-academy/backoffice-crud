@@ -2,8 +2,8 @@
 
 namespace Pyz\Zed\AntelopeGui\Communication\Form\DataProvider;
 
-use Generated\Shared\Transfer\AntelopeCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
+use Generated\Shared\Transfer\AntelopeTransfer;
 use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeCreateForm;
 
@@ -15,7 +15,7 @@ class AntelopeDataProvider
     }
 
     public function getData(AntelopeCriteriaTransfer $antelopeCriteriaTransfer
-    ): AntelopeCollectionTransfer {
+    ): AntelopeTransfer {
         return $this->antelopeFacade->getAntelopeCollection($antelopeCriteriaTransfer)
             ->getAntelopes()->getIterator()->current();
     }

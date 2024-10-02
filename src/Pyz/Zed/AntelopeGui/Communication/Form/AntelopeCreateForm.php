@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\AntelopeGui\Communication\Form;
 
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
@@ -9,26 +14,94 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @method \Pyz\Zed\AntelopeGui\Communication\AntelopeGuiCommunicationFactory getFactory()
+ */
 class AntelopeCreateForm extends AbstractType
 {
+    /**
+     * @var string
+     */
     protected const FIELD_LOCATION = 'location_id';
+
+    /**
+     * @var string
+     */
     protected const FIELD_NAME = 'name';
+
+    /**
+     * @var string
+     */
     protected const FIELD_COLOR = 'color';
+
+    /**
+     * @var string
+     */
     protected const FIELD_GENDER = 'gender';
+
+    /**
+     * @var string
+     */
     protected const FIELD_WEIGHT = 'weight';
+
+    /**
+     * @var string
+     */
     protected const FIELD_TYPE = 'type_id';
+
+    /**
+     * @var string
+     */
     protected const FIELD_AGE = 'age';
 
+    /**
+     * @var string
+     */
     public const LABEL_AGE = 'Age';
+
+    /**
+     * @var string
+     */
     public const LABEL_NAME = 'Name';
+
+    /**
+     * @var string
+     */
     public const LABEL_GENDER = 'Gender';
+
+    /**
+     * @var string
+     */
     public const LABEL_WEIGHT = 'Weight';
+
+    /**
+     * @var string
+     */
     public const LABEL_LOCATION = 'Location';
+
+    /**
+     * @var string
+     */
     public const LABEL_TYPE = 'Type';
+
+    /**
+     * @var string
+     */
     public const LABEL_COLOR = 'Color';
+
+    /**
+     * @var string
+     */
     public const TYPE_CHOICES = 'types';
+
+    /**
+     * @var string
+     */
     public const LOCATION_CHOICES = 'locations';
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined([
@@ -50,9 +123,12 @@ class AntelopeCreateForm extends AbstractType
         return 'antelope';
     }
 
+    /**
+     * @return void
+     */
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): void {
         $this->addFieldColor($builder, $options)
             ->addFieldName($builder, $options)
@@ -65,77 +141,82 @@ class AntelopeCreateForm extends AbstractType
 
     protected function addFieldName(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): static {
         $builder->add(static::FIELD_NAME, TextType::class, [
             'label' => $options[static::LABEL_NAME] ?? self::LABEL_NAME,
             'required' => true,
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
+
         return $this;
     }
 
     protected function addFieldColor(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): static {
         $builder->add(static::FIELD_COLOR, TextType::class, [
             'label' => $options[static::LABEL_COLOR] ?? self::LABEL_COLOR,
             'required' => true,
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
+
         return $this;
     }
 
     protected function addFieldWeight(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): static {
         $builder->add(static::FIELD_WEIGHT, TextType::class, [
             'label' => $options[static::LABEL_WEIGHT] ?? self::LABEL_WEIGHT,
             'required' => true,
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
+
         return $this;
     }
 
     protected function addFieldGender(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): static {
         $builder->add(static::FIELD_GENDER, TextType::class, [
             'label' => $options[static::LABEL_GENDER] ?? self::LABEL_GENDER,
             'required' => true,
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
+
         return $this;
     }
 
     protected function addFieldAge(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): static {
         $builder->add(static::FIELD_AGE, TextType::class, [
             'label' => $options[static::LABEL_AGE] ?? self::LABEL_AGE,
             'required' => true,
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
+
         return $this;
     }
 
     protected function addFieldType(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): static {
         $builder->add(static::FIELD_TYPE, ChoiceType::class, [
             'label' => $options[static::LABEL_TYPE] ?? self::LABEL_TYPE,
@@ -144,14 +225,15 @@ class AntelopeCreateForm extends AbstractType
             'choices' => array_flip($options[static::TYPE_CHOICES] ?? []),
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
+
         return $this;
     }
 
     protected function addFieldLocation(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): static {
         $builder->add(static::FIELD_LOCATION, ChoiceType::class, [
             'label' => $options[static::LABEL_LOCATION] ?? self::LABEL_LOCATION,
@@ -160,8 +242,9 @@ class AntelopeCreateForm extends AbstractType
             'choices' => array_flip($options[static::LOCATION_CHOICES] ?? []),
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
+
         return $this;
     }
 }

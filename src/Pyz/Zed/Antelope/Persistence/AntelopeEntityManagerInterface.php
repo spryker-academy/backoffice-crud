@@ -9,9 +9,10 @@ interface AntelopeEntityManagerInterface
     public function createAntelope(AntelopeTransfer $antelopeTransfer
     ): AntelopeTransfer;
 
-    public function updateAntelope(AntelopeTransfer $antelopeTransfer);
+    public function updateAntelope(AntelopeTransfer $antelopeTransfer
+    ): AntelopeTransfer;
 
     public function deleteAntelope(
         AntelopeTransfer $antelopeTransfer
-    );
+    ): bool;
 }

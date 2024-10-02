@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @method \Pyz\Zed\AntelopeGui\Communication\AntelopeGuiCommunicationFactory getFactory()
  */
-class EditController extends AbstractController
+class DeleteController extends AbstractController
 {
     /**
      * @var string
@@ -27,7 +27,7 @@ class EditController extends AbstractController
     /**
      * @var string
      */
-    protected const ANTELOPE_SUCCESSFULLY_UPDATE = 'Antelope successfully updated';
+    protected const ANTELOPE_SUCCESSFULLY_DELETED = 'Antelope successfully deleted';
 
     /**
      * @var string
@@ -51,17 +51,18 @@ class EditController extends AbstractController
         $antelopeCriteria = new AntelopeCriteriaTransfer();
         $antelopeCriteria->setAntelopeConditions($antelopeConditions);
         $antelopeTransfer = $this->getFactory()->createAntelopeDataProvider()->getData($antelopeCriteria);
-        $options = $this->getOptions();
-        $antelopeForm = $this->getFactory()->createAntelopeCreateForm(
+
+        $antelopeForm = $this->getFactory()->createAntelopeDeleteForm(
             $antelopeTransfer,
-            $options,
+            [],
         )->handleRequest($request);
         if ($antelopeForm->isSubmitted() && $antelopeForm->isValid()) {
-            return $this->updateAntelope($antelopeForm);
+            return $this->deleteAntelope($antelopeForm);
         }
 
         return $this->viewResponse([
-            'antelopeCreateForm' => $antelopeForm->createView(),
+            'antelope' => $antelopeTransfer,
+            'antelopeDeleteForm' => $antelopeForm->createView(),
         ]);
     }
 
@@ -70,7 +71,7 @@ class EditController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateAntelope(
+    public function deleteAntelope(
         FormInterface $antelopeForm,
     ): RedirectResponse {
         /**
@@ -79,8 +80,12 @@ class EditController extends AbstractController
         $antelopeTransfer = $antelopeForm->getData();
         // $antelopeTransfer->setTypeId(1);
         // $antelopeTransfer->setLocationId(1);
-        $this->getFactory()->getAntelopeFacade()->updateAntelope($antelopeTransfer);
-        $this->addSuccessMessage(static::ANTELOPE_SUCCESSFULLY_UPDATE);
+        $res = $this->getFactory()->getAntelopeFacade()->deleteAntelope($antelopeTransfer);
+        if ($res) {
+            $this->addSuccessMessage(static::ANTELOPE_SUCCESSFULLY_DELETED);
+        } else {
+            $this->addErrorMessage(static::ANTELOPE_BADREQUEST_MESSAGE);
+        }
 
         return $this->redirectResponse(static::ANTELOPE_GUI_URL);
     }

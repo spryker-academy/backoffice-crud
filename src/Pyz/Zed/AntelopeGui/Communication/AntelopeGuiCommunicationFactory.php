@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Pyz\Zed\AntelopeGui\Communication;
@@ -13,11 +18,11 @@ use Orm\Zed\AntelopeType\Persistence\PyzAntelopeTypeQuery;
 use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 use Pyz\Zed\AntelopeGui\AntelopeGuiDependencyProvider;
 use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeCreateForm;
+use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeDeleteForm;
 use Pyz\Zed\AntelopeGui\Communication\Form\DataProvider\AntelopeDataProvider;
 use Pyz\Zed\AntelopeGui\Communication\Table\AntelopeTable;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Symfony\Component\Form\FormInterface;
-
 
 class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
 {
@@ -55,6 +60,7 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
         foreach ($types as $type) {
             $result[$type->getIdantelopetype()] = $type->getTypeName();
         }
+
         return $result;
     }
 
@@ -67,15 +73,30 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
         foreach ($types as $type) {
             $result[$type->getIdantelopelocation()] = $type->getLocationName();
         }
+
         return $result;
     }
 
     public function createAntelopeCreateForm(
         AntelopeTransfer $antelopeTransfer,
-        array $options = []
+        array $options = [],
     ): FormInterface {
-        return $this->getFormFactory()->create(AntelopeCreateForm::class,
-            $antelopeTransfer, $options);
+        return $this->getFormFactory()->create(
+            AntelopeCreateForm::class,
+            $antelopeTransfer,
+            $options,
+        );
+    }
+
+    public function createAntelopeDeleteForm(
+        AntelopeTransfer $antelopeTransfer,
+        array $options = [],
+    ): FormInterface {
+        return $this->getFormFactory()->create(
+            AntelopeDeleteForm::class,
+            $antelopeTransfer,
+            $options,
+        );
     }
 
     public function createAntelopeDataProvider(): AntelopeDataProvider

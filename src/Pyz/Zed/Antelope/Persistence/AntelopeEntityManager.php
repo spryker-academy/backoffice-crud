@@ -47,8 +47,7 @@ class AntelopeEntityManager extends AbstractEntityManager implements
 
     public function deleteAntelope(AntelopeTransfer $antelopeTransfer): bool
     {
-        $antelopeEntity = $this->getFactory()->createAntelopeMapper()->mapAntelopeTransferToAntelopeEntity($antelopeTransfer,
-            new PyzAntelope());
+        $antelopeEntity = $this->getFactory()->createAntelopeQuery()->findPk($antelopeTransfer->getIdAntelope());
         $antelopeEntity->delete();
         return $antelopeEntity->isDeleted();
     }

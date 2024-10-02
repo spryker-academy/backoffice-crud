@@ -1,0 +1,28 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Delete Antelope' | trans %}
+{% block action %}
+    {{ backActionButton('/antelope-gui', 'Back to Antelopes' | trans) }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <p>{{ "You are trying to delete antelope" | trans }}:
+                <b>{{ antelope.idAntelope ~ ' ' ~ antelope.name }}</b></p>
+            <p>{{ "It will be deleted from everywhere" | trans }}</p>
+        </div>
+    </div>
+    <hr/>
+    {% embed '@Gui/Partials/widget.twig' %}
+        {% block widget_content %}
+            {{ form_start(antelopeDeleteForm) }}
+            {% for field in antelopeDeleteForm.children %}
+                {{ form_row(field) }}
+            {% endfor %}
+            <input type="submit" class="btn btn-primary"
+                   value="{{ 'Delete antelope' | trans }}">
+            {{ form_end(antelopeDeleteForm) }}
+
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
